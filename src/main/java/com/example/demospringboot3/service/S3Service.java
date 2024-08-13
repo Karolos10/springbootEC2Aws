@@ -1,10 +1,7 @@
 package com.example.demospringboot3.service;
 
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectInputStream;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
 import com.example.demospringboot3.entity.vm.Asset;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,7 @@ public class S3Service {
     private final static String BUCKET = "springbootss3bucketdemo";
 
     @Autowired
-    private AmazonS3Client s3Client;
+    private AmazonS3 s3Client;
 
     public String putObject(MultipartFile multipartFile){
         String extension = StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
@@ -31,7 +28,8 @@ public class S3Service {
         objectMetadata.setContentType(multipartFile.getContentType());
 
         try {
-            PutObjectRequest putObjectRequest = new PutObjectRequest(BUCKET, key, multipartFile.getInputStream(), objectMetadata);
+            PutObjectRequest putObjectRequest = new PutObjectRequest(BUCKET, key, multipartFile.getInputStream(), objectMetadata)
+                    .withCannedAcl(CannedAccessControlList.PublicRead);
             s3Client.putObject(putObjectRequest);
 
             return key;
