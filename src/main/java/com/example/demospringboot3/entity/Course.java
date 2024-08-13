@@ -9,9 +9,9 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Entity
-@Data
-@NoArgsConstructor
-@RequiredArgsConstructor
+//@Data
+//@NoArgsConstructor
+//@RequiredArgsConstructor
 public class Course {
 
     @Id
@@ -24,4 +24,11 @@ public class Course {
     @NonNull
     private String imagePath;
     private String imageUrl;
+
+    public Course(Integer id, String title, String imagePath, String imageUrl) {
+        this.id = id;
+        this.title = title;
+        this.imagePath = imagePath;
+        this.imageUrl = imageUrl;
+    }
 }
